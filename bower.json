@@ -1,0 +1,21 @@
+{
+  "name": "4830explore3",
+  "description": "a demo from book",
+  "main": "index.js",
+  "authors": [
+    "Mingqin Tan"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.14.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "4830explore3",
+  "version": "1.0.0",
+  "description": "a demo from book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-mttfd:mttfd/4830explore3.git"
+  },
+  "author": "Mingqin Tan",
+  "license": "MIT",
+  "dependencies": {}
+}
