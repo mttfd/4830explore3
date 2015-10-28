@@ -125,27 +125,10 @@ var Excel = React.createClass({
     },
 
     _renderToolbar: function() {
-        // return React.DOM.div({
-        //         className: 'toolbar'
-        //     },
-        //     React.DOM.button({
-        //         onClick: this._toggleSearch,
-        //         className: 'toolbar'
-        //     }, 'search'),
-        //     React.DOM.a({
-        //         //感觉说白了bind就是一个函数currying的东西。。
-        //         onClick: this._download.bind(this, 'json'),
-        //         href: 'data.json'
-        //     }, 'Export JSON'),
-        //     React.DOM.a({
-        //         onClick: this._download.bind(this, 'csv'),
-        //         href: 'data.csv'
-        //     }, 'Export CSV')
-        // );
 
         return (
             <div className="toolbar">
-                <button onClick={this._toggleSearch} className: 'toolbar'>search</button>
+                <button onClick={this._toggleSearch} className='toolbar'>search</button>
                 <a onClick={this._download.bind(this, 'json')} href="data.json">Export JSON</a>
                 <a onClick={this._download.bind(this, 'csv')} href="data.csv">Export CSV</a>
             </div>
@@ -157,22 +140,6 @@ var Excel = React.createClass({
             return null;
         }
 
-        // return (
-        //     React.DOM.tr({
-        //             onChange: this._search
-        //         },
-        //         this.props.headers.map(function(_ignore, idx) {
-        //             return React.DOM.td({
-        //                     key: idx
-        //                 },
-        //                 React.DOM.input({
-        //                     type: 'text',
-        //                     'data-idx': idx
-        //                 })
-        //             );
-        //         })
-        //     )
-        // );
 
         return (
             <tr onChange={this._search}>
@@ -191,65 +158,54 @@ var Excel = React.createClass({
 
     _renderTable: function() {
         var self = this;
-        return (
-            React.DOM.table(null,
-                //delegates the event for tr..
-                React.DOM.thead({
-                        onClick: this._sort
-                    },
-                    React.DOM.tr(null,
-                        //has to specify a unique key for every element in array
-                        this.props.headers.map((function(title, idx) {
-                            if (this.state.sortBy === idx) {
-                                title += this.state.descending ? ' \u2191' : ' \u2193';
-                            }
-                            return React.DOM.th({
-                                key: idx
-                            }, title);
-                        }).bind(this))
-                    )
-                ),
-                React.DOM.tbody({
-                        onDoubleClick: self._showEditor
-                    },
-                    this._renderSearch(),
-                    this.state.data.map(function(row, rowidx) {
-                        return (
-                            React.DOM.tr({
-                                    key: rowidx
-                                },
-                                row.map(function(cell, idx) {
-                                    var content = cell;
-                                    var edit = self.state.edit;
-                                    if (edit && edit.row === rowidx && edit.cell === idx) {
-                                        content = React.DOM.form({
-                                                onSubmit: self._save
-                                            },
-                                            React.DOM.input({
-                                                type: 'text',
-                                                defaultValue: content
-                                            })
-                                        );
-                                    }
 
-                                    return React.DOM.td({
-                                        key: idx,
-                                        'data-row': rowidx
-                                    }, content);
-                                })
-                            )
-                        );
-                    })
-                )
-            )
+        return (
+            <table>
+                <thead onClick={this._sort}>
+                    <tr>
+                        {
+                            this.props.headers.map((function(title, idx) {
+                                if (this.state.sortBy === idx) {
+                                    title += this.state.descending ? ' \u2191' : ' \u2193';
+                                }
+                                return <th key={idx}>{title}</th>;
+                            }).bind(this))
+                        }
+                    </tr>
+                </thead>
+                <tbody onDoubleClick={this._showEditor}>
+                    {
+                        this._renderSearch(),
+                        this.state.data.map(function(row, rowidx) {
+                            return (
+                                <tr key={rowidx}>
+                                    {
+                                        row.map(function(cell, idx) {
+                                            var content = cell;
+                                            var edit = self.state.edit;
+                                            if (edit && edit.row === rowidx && edit.cell === idx) {
+                                                content = <form onSubmit={self._save}>
+                                                    <input type="text" defaultValue={content} />
+                                                </form>;
+                                            }
+
+                                            return <td key={idx} data-row={rowidx}>{content}</td>
+                                        })
+                                    }
+                               </tr>
+                            );
+                        })
+                    }
+                </tbody>
+            </table>
         );
     },
 
     render: function() {
         return (
             <div>
-                {{this._renderToolbar(),
-                this._renderTable()}}
+                {this._renderToolbar(),
+                this._renderTable()}
             </div>
         );
     }
