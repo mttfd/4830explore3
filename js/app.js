@@ -125,22 +125,30 @@ var Excel = React.createClass({
     },
 
     _renderToolbar: function() {
-        return React.DOM.div({
-                className: 'toolbar'
-            },
-            React.DOM.button({
-                onClick: this._toggleSearch,
-                className: 'toolbar'
-            }, 'search'),
-            React.DOM.a({
-                //感觉说白了bind就是一个函数currying的东西。。
-                onClick: this._download.bind(this, 'json'),
-                href: 'data.json'
-            }, 'Export JSON'),
-            React.DOM.a({
-                onClick: this._download.bind(this, 'csv'),
-                href: 'data.csv'
-            }, 'Export CSV')
+        // return React.DOM.div({
+        //         className: 'toolbar'
+        //     },
+        //     React.DOM.button({
+        //         onClick: this._toggleSearch,
+        //         className: 'toolbar'
+        //     }, 'search'),
+        //     React.DOM.a({
+        //         //感觉说白了bind就是一个函数currying的东西。。
+        //         onClick: this._download.bind(this, 'json'),
+        //         href: 'data.json'
+        //     }, 'Export JSON'),
+        //     React.DOM.a({
+        //         onClick: this._download.bind(this, 'csv'),
+        //         href: 'data.csv'
+        //     }, 'Export CSV')
+        // );
+
+        return (
+            <div className="toolbar">
+                <button onClick={this._toggleSearch} className: 'toolbar'>search</button>
+                <a onClick={this._download.bind(this, 'json')} href="data.json">Export JSON</a>
+                <a onClick={this._download.bind(this, 'csv')} href="data.csv">Export CSV</a>
+            </div>
         );
     },
 
@@ -149,21 +157,35 @@ var Excel = React.createClass({
             return null;
         }
 
+        // return (
+        //     React.DOM.tr({
+        //             onChange: this._search
+        //         },
+        //         this.props.headers.map(function(_ignore, idx) {
+        //             return React.DOM.td({
+        //                     key: idx
+        //                 },
+        //                 React.DOM.input({
+        //                     type: 'text',
+        //                     'data-idx': idx
+        //                 })
+        //             );
+        //         })
+        //     )
+        // );
+
         return (
-            React.DOM.tr({
-                    onChange: this._search
-                },
-                this.props.headers.map(function(_ignore, idx) {
-                    return React.DOM.td({
-                            key: idx
-                        },
-                        React.DOM.input({
-                            type: 'text',
-                            'data-idx': idx
-                        })
-                    );
-                })
-            )
+            <tr onChange={this._search}>
+                {
+                    this.props.headers.map(function(_ignore, idx) {
+                        return (
+                            <td key={idx}>
+                                <input type="text" data-idx={idx} />
+                            </td>
+                        );
+                    })
+                }
+            </tr>
         );
     },
 
@@ -225,10 +247,10 @@ var Excel = React.createClass({
 
     render: function() {
         return (
-            React.DOM.div(null,
-                this._renderToolbar(),
-                this._renderTable()
-            )
+            <div>
+                {{this._renderToolbar(),
+                this._renderTable()}}
+            </div>
         );
     }
 });
